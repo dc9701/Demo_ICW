@@ -1,0 +1,229 @@
+{
+    "StackId": "arn:aws:cloudformation:us-west-2:989207584854:stack/test-aws-uswest2-full-art-3-wks/c4b3fb40-4311-11f0-837f-0a9cf5e9d9ff",
+    "StackName": "test-aws-uswest2-full-art-3-wks",
+    "Description": "AWS CloudFormation template for deploying the reference architecture for Teradata AI Unlimited on AWS.",
+    "Parameters": [
+        {
+            "ParameterKey": "ExistingPersistentVolumeId",
+            "ParameterValue": ""
+        },
+        {
+            "ParameterKey": "AiUnlimitedSchedulerHttpPort",
+            "ParameterValue": "50061"
+        },
+        {
+            "ParameterKey": "LatestAmiId",
+            "ParameterValue": "/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-x86_64",
+            "ResolvedValue": "ami-0418306302097dbff"
+        },
+        {
+            "ParameterKey": "AiUnlimitedVersion",
+            "ParameterValue": "v0.3.10"
+        },
+        {
+            "ParameterKey": "AvailabilityZone",
+            "ParameterValue": "us-west-2a"
+        },
+        {
+            "ParameterKey": "AiUnlimitedAuthPort",
+            "ParameterValue": "3000"
+        },
+        {
+            "ParameterKey": "AiUnlimitedSchedulerVersion",
+            "ParameterValue": "v0.1.80"
+        },
+        {
+            "ParameterKey": "AiUnlimitedName",
+            "ParameterValue": "test-aws-uswest2-full-art-3"
+        },
+        {
+            "ParameterKey": "AiUnlimitedUiVersion",
+            "ParameterValue": "v0.1.3"
+        },
+        {
+            "ParameterKey": "TerminationProtection",
+            "ParameterValue": "false"
+        },
+        {
+            "ParameterKey": "AccessCIDR",
+            "ParameterValue": "0.0.0.0/0"
+        },
+        {
+            "ParameterKey": "UsePersistentVolume",
+            "ParameterValue": "New"
+        },
+        {
+            "ParameterKey": "PersistentVolumeSize",
+            "ParameterValue": "100"
+        },
+        {
+            "ParameterKey": "AiUnlimitedSchedulerGrpcPort",
+            "ParameterValue": "50051"
+        },
+        {
+            "ParameterKey": "VpcCidr",
+            "ParameterValue": "10.0.0.0/16"
+        },
+        {
+            "ParameterKey": "RootVolumeSize",
+            "ParameterValue": "100"
+        },
+        {
+            "ParameterKey": "AiUnlimitedGrpcPort",
+            "ParameterValue": "3282"
+        },
+        {
+            "ParameterKey": "PrefixList",
+            "ParameterValue": ""
+        },
+        {
+            "ParameterKey": "InstanceType",
+            "ParameterValue": "t3.medium"
+        },
+        {
+            "ParameterKey": "AiUnlimitedServerPublicBaseUrl",
+            "ParameterValue": "test-a-LoadB-ercaCm60Pau3-dc528b834c25243d.elb.us-west-2.amazonaws.com"
+        },
+        {
+            "ParameterKey": "Vpc",
+            "ParameterValue": "vpc-0c9c9ea8c6ff535ac"
+        },
+        {
+            "ParameterKey": "AiUnlimitedHttpPort",
+            "ParameterValue": "3000"
+        },
+        {
+            "ParameterKey": "Protocol",
+            "ParameterValue": "http"
+        },
+        {
+            "ParameterKey": "JupyterToken",
+            "ParameterValue": "****"
+        },
+        {
+            "ParameterKey": "JupyterVersion",
+            "ParameterValue": "v0.1.8"
+        },
+        {
+            "ParameterKey": "AiUnlimitedAPIkey",
+            "ParameterValue": "****"
+        },
+        {
+            "ParameterKey": "JupyterHttpPort",
+            "ParameterValue": "8888"
+        },
+        {
+            "ParameterKey": "AiUnlimitedServerBaseUrl",
+            "ParameterValue": "10.0.1.225"
+        },
+        {
+            "ParameterKey": "SecurityGroup",
+            "ParameterValue": "sg-022e042b19865a00d"
+        },
+        {
+            "ParameterKey": "JupyterName",
+            "ParameterValue": "Jupyter"
+        },
+        {
+            "ParameterKey": "Subnet",
+            "ParameterValue": "subnet-06a3bbf616143915d"
+        },
+        {
+            "ParameterKey": "VerifyJupyterToken",
+            "ParameterValue": "****"
+        },
+        {
+            "ParameterKey": "TLSenabled",
+            "ParameterValue": "false"
+        }
+    ],
+    "CreationTime": "2025-06-06 20:06:44",
+    "RollbackConfiguration": {},
+    "StackStatus": "CREATE_COMPLETE",
+    "DisableRollback": false,
+    "NotificationARNs": [],
+    "Capabilities": [
+        "CAPABILITY_IAM",
+        "CAPABILITY_NAMED_IAM",
+        "CAPABILITY_AUTO_EXPAND"
+    ],
+    "Outputs": [
+        {
+            "OutputKey": "PrivateEngineSubnetCidrBlock",
+            "OutputValue": "10.0.128.0/20"
+        },
+        {
+            "OutputKey": "CreateJupyterInstance",
+            "OutputValue": "https://us-west-2.console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/create/review?templateURL=https://s3.us-west-2.amazonaws.com/ai.unlimited.deployment.staging.us-west-2/unlimited-jupyter.yaml&stackName=Jupyter&param_Vpc=vpc-0c9c9ea8c6ff535ac&param_Subnet=subnet-06a3bbf616143915d&param_AvailabilityZone=us-west-2a&param_AiUnlimitedServerBaseUrl=10.0.1.225&param_AiUnlimitedAuthPort=3000&param_AiUnlimitedGrpcPort=3282&param_AiUnlimitedSchedulerHttpPort=50061&param_AiUnlimitedSchedulerGrpcPort=50051&param_Protocol=http&param_TLSenabled=false&param_PrefixList=&param_AccessCIDR=0.0.0.0/0&param_SecurityGroup=sg-022e042b19865a00d&param_AiUnlimitedServerPublicBaseUrl=test-a-LoadB-ercaCm60Pau3-dc528b834c25243d.elb.us-west-2.amazonaws.com\n",
+            "Description": "Create a Jupyter instance for use with this deployment"
+        },
+        {
+            "OutputKey": "AiUnlimitedUiAccess",
+            "OutputValue": "http://test-a-LoadB-ercaCm60Pau3-dc528b834c25243d.elb.us-west-2.amazonaws.com",
+            "Description": "Loadbalancer access endpoint for AI Unlimited UI Access"
+        },
+        {
+            "OutputKey": "AiUnlimitedApiAccess",
+            "OutputValue": "test-a-LoadB-ercaCm60Pau3-dc528b834c25243d.elb.us-west-2.amazonaws.com:3282",
+            "Description": "Loadbalancer access endpoint for AI Unlimited API Access"
+        },
+        {
+            "OutputKey": "VpcCidrBlock",
+            "OutputValue": "10.0.0.0/16"
+        },
+        {
+            "OutputKey": "VpcId",
+            "OutputValue": "vpc-0c9c9ea8c6ff535ac"
+        },
+        {
+            "OutputKey": "PrivateServiceSubnetCidrBlock",
+            "OutputValue": "10.0.1.0/24"
+        },
+        {
+            "OutputKey": "PrivateServiceSubnetId",
+            "OutputValue": "subnet-01b13e1750d1bb9da"
+        },
+        {
+            "OutputKey": "PrivateEngineSubnetId",
+            "OutputValue": "subnet-06dff9c5555950bbd"
+        },
+        {
+            "OutputKey": "PublicAccessSubnetCidrBlock",
+            "OutputValue": "10.0.0.0/24"
+        },
+        {
+            "OutputKey": "PublicAccessSubnetId",
+            "OutputValue": "subnet-06a3bbf616143915d"
+        },
+        {
+            "OutputKey": "JupyterUIAccess",
+            "OutputValue": "http://ec2-54-212-29-249.us-west-2.compute.amazonaws.com:8888"
+        },
+        {
+            "OutputKey": "JupyterVolumeId",
+            "OutputValue": "vol-0d181ca8f7860bb52"
+        }
+    ],
+    "Tags": [
+        {
+            "TagKey": "AiUnlimitedWorkspacesURL",
+            "TagValue": "http://test-a-loadb-ercacm60pau3-dc528b834c25243d.elb.us-west-2.amazonaws.com"
+        },
+        {
+            "TagKey": "AiUnlimitedJupyterURL",
+            "TagValue": "http://ec2-54-212-29-249.us-west-2.compute.amazonaws.com:8888/?token=jupyterpass"
+        },
+        {
+            "TagKey": "GitHubClientID",
+            "TagValue": "Ov23lismUIGucvr7gLxD"
+        },
+        {
+            "TagKey": "GitHubClientSecret",
+            "TagValue": "5900bd8e063f7e650cf015ca8e9e8f17b1a0ffd2"
+        }
+    ],
+    "EnableTerminationProtection": false,
+    "DriftInformation": {
+        "StackDriftStatus": "NOT_CHECKED"
+    }
+}

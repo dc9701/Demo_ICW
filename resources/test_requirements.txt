@@ -1,0 +1,8 @@
+pytest
+pytest-cov
+flake8
+flake8-bandit
+flake8-docstrings~=1.6.0
+flake8-todos
+flake8-eradicate
+allure-pytest

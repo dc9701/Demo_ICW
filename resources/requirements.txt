@@ -1,0 +1,15 @@
+boto3
+python-dotenv
+pyotp
+azure-common
+azure-mgmt-resource
+azure-identity
+behave-html-pretty-formatter
+gql
+websocket-client 
+allure-behave
+PyHamcrest
+behave
+requests
+selenium
+urllib3
