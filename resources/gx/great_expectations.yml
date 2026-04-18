@@ -84,6 +84,12 @@ fluent_datasources:
   snowflake_datasource:
     type: snowflake
     id: ffc0ae1b-7a38-4098-8e76-40bd55f4880b
+    assets:
+      claims_asset:
+        type: table
+        id: 61e4d8a6-8fe7-4b58-abc9-6cad10004061
+        batch_metadata: {}
+        table_name: CLAIMS
     connection_string: 
       snowflake://dcc9701:Bondage137-2604@uhb26519/OR_WORKERS_COMP/PUBLIC?warehouse=COMPUTE_WH&role=ACCOUNTADMIN
 analytics_enabled:

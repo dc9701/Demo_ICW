@@ -27,4 +27,18 @@ datasource = context.data_sources.add_or_update_snowflake(
     connection_string=sf_conn_string,
 )
 
-print("[DCC_DEBUG_02] W/ DATASOURCE:\n", context)
+# DCC print("[DCC_DEBUG_01] CONTEXT W/ DATASOURCE:\n", context)
+
+# Add CLAIMS table asset and define Batch Request
+table_asset = datasource.add_table_asset(
+    name="claims_asset",
+    table_name="CLAIMS"
+)
+batch_request = table_asset.build_batch_request()
+
+# Test the connection by retrieving a validator
+validator = context.get_validator(
+    batch_request=batch_request
+)
+print(validator.head())
+
