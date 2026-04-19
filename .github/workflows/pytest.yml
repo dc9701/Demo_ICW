@@ -1,0 +1,38 @@
+name: Unit Testing
+
+on: [push]
+
+jobs:
+  build:
+    name: Unit Testing Coverage Checker
+    runs-on: ubuntu-24.04
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setting up Python 3.10
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+        check-latest: false
+        update-environment: false
+        allow-prereleases: false
+    - name: Setting virtual environment for Python3 3.10
+      run: |
+        python -m venv .venv
+        source .venv/bin/activate
+    - name: Install dependencies on the virtual environment
+      run: |
+        source .venv/bin/activate
+        python -m pip install --upgrade pip
+        pip install -r resources/requirements.txt
+        pip install -r resources/test_requirements.txt
+        pip install allure-behave
+    - name: Install Windows-specific packages
+      if: runner.os == 'Windows'
+      run: |
+        source .venv/bin/activate
+        pip install json
+    - name: Running Unit Tests with pytest
+      run: |
+        source .venv/bin/activate
+        PYTHONPATH=.:features pytest -c pytest.ini

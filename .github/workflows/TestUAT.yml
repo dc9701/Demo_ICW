@@ -1,0 +1,166 @@
+name: 7. TestUAT
+
+on:
+  workflow_dispatch:
+    inputs:
+      engine_bom_version:
+        type: string
+        description: BOM Version
+        required: true
+        default: '20.00.25.c20250505'
+      browser:
+        type: choice
+        description: Which browser to test with
+        required: true
+        options:
+          - chrome
+          - edge
+          - firefox
+          - safari
+        default: 'chrome'
+      stack:
+        type: string
+        description: Which stack to test against
+        required: true
+        default: 'test-aws-uswest2-01'
+      test_tags:
+        type: string
+        description: Test tags
+        required: false
+        default: '-t uat'
+      debug:
+        type: choice
+        description: Debug options
+        required: false
+        options:
+          - --no-logcapture --no-capture
+          - -s --no-capture
+          - --quiet
+          - --verbose
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+    contents: write
+    pages: write
+    id-token: write
+  
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+    group: "pages"
+    cancel-in-progress: false
+  
+jobs:
+  test:
+    name: AI Unlimited UAT Tests
+    runs-on: Linux
+
+    container:
+      image: node:20
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+  
+    services:
+      selenium:
+        image: selenium/standalone-${{ github.event.inputs.browser }}
+        options: --shm-size=2gb
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Update GIT config
+        run: |
+          /usr/bin/git config --system --add safe.directory '*'
+      - name: Install missing OS lsb-release & Chrome browser
+        run: |
+          apt-get update
+          apt-get install -y lsb-release
+          apt-get install -y chromium chromium-driver
+          which chromium && chromium --version
+      - name: Install python modules via apt-get
+        run: |
+          apt-get install -y python3
+          apt-get install -y allure python3-behave python3-boto3 python3-dotenv python3-hamcrest python3-pip python3-pyotp python3-requests python3-selenium python3-websocket python3-yaml python3-bs4
+      - name: Install ALLURE executable
+        run: |
+          apt-get install -y default-jre
+          wget https://github.com/allure-framework/allure2/releases/download/2.30.0/allure_2.30.0-1_all.deb
+          dpkg -i allure_2.30.0-1_all.deb
+          echo 'ALLURE version:'; allure --version
+      - name: Install allure-behave and azure python modules via pip
+        run: |
+          pip install --break-system-package allure-behave azure-common azure-core azure-identity azure-mgmt-core azure-mgmt-resource
+      - name: Configure GitHub
+        run: |
+          git config user.email "david.cooper@teradata.com"
+          git config user.name "David Cooper"
+      - name: Run the test(s)
+        working-directory: ./features
+        id: run_tests
+        run: |
+          wget -qO- -4 ifconfig.me | grep -E 'ip_addr:'
+          export AIU_BOM_PREFIX="AIU"
+          if echo "$AIU_STACK_NAME" | grep -iq "mkt"; then
+            export AIU_BOM_PREFIX="$AIU_BOM_PREFIX-MKT"
+            export AIU_TEST_TAGS="$AIU_TEST_TAGS -t mkt"
+          else
+            export AIU_TEST_TAGS="$AIU_TEST_TAGS -t full"
+          fi
+          if echo "$AIU_STACK_NAME" | grep -iq "aws"; then
+            export AIU_BOM_PREFIX="$AIU_BOM_PREFIX-AWS"
+            export AIU_TEST_TAGS="$AIU_TEST_TAGS -t aws"
+          fi
+          if echo "$AIU_STACK_NAME" | grep -iq "azure"; then
+            export AIU_BOM_PREFIX="$AIU_BOM_PREFIX-AZURE"
+            export AIU_TEST_TAGS="$AIU_TEST_TAGS -t azure"
+          fi
+          export AIU_ENGINE_BOM_VERSION="$AIU_BOM_PREFIX-$AIU_ENGINE_BOM_VERSION"
+          export AIU_TEST_TAGS="$AIU_TEST_TAGS -t ~skip"
+          echo BOM VERSION: $AIU_ENGINE_BOM_VERSION
+          echo TEST TAGS: $AIU_TEST_TAGS
+          mkdir ../downloads ../screenshots
+          behave ${{ github.event.inputs.debug }} --format=plain --outfile=reports/allure $AIU_TEST_TAGS tests
+        env:
+          AIU_BROWSER: ${{ github.event.inputs.browser }}
+          AIU_ENGINE_BOM_VERSION: ${{ github.event.inputs.engine_bom_version }}
+          AIU_STACK_NAME: ${{ github.event.inputs.stack }}
+          AIU_TEST_TAGS: ${{ github.event.inputs.test_tags }}
+          AWS_ACCESS_KEY_ID: "AKIA6MUK54BLAM45MHPY"
+          AWS_SECRET_ACCESS_KEY: "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"
+          AWS_SESSION_TOKEN: ""
+          AZURE_CLIENT_ID: "fe04b42f-cbae-40d8-9dce-eb46e1b2d57c"
+          AZURE_CLIENT_SECRET: "05a8Q~vrH4h8t.oPZRmzO3s5LdaJKu2Z4hH9tdxP"
+          AZURE_SUBSCRIPTION_ID: "fd7c4a9f-9190-45db-84b8-faaaabf53dce"
+          AZURE_TENANT_ID: "7998488c-180b-404d-9d7f-b4bd6f46b2df"
+          GITHUB_TOKEN: "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"
+          GITHUB_PASSWORD: "Wodanaz88#Wodanaz88#"
+          GITHUB_TOTP_SECRET: "4QUS6WPNKRI4DX4Y"
+          GITHUB_USERNAME: "a01662245@tec.mx"
+          TERM: xterm-256color
+      - name: Generate Allure HTML report from results
+        if: always()
+        working-directory: ./features/reports
+        run: |
+            allure generate --clean --single-file allure
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-evidence
+          path: |
+            downloads/*
+            features/reports/*
+            screenshots/*
+
+      # Deploy Allure HTML report to our repo's GitHub Pages
+      - name: Setup Pages
+        if: always()
+        uses: actions/configure-pages@v5
+      - name: Upload artifact
+        if: always()
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'features/reports/allure-report'
+      - name: Deploy to GitHub Pages
+        if: always()
+        id: deployment
+        uses: actions/deploy-pages@v4
