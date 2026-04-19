@@ -87,7 +87,7 @@ fluent_datasources:
     assets:
       claims_asset:
         type: table
-        id: 61e4d8a6-8fe7-4b58-abc9-6cad10004061
+        id: 79524d6c-33b5-465b-ad66-839a4630f98f
         batch_metadata: {}
         table_name: CLAIMS
     connection_string: 
