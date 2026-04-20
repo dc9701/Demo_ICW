@@ -16,11 +16,8 @@ from datetime import datetime
 from dotenv import load_dotenv, find_dotenv
 from types import SimpleNamespace
 
-# Snowflake- and GX-related imports.
+# GX-related imports.
 import great_expectations as gx
-import pandas as pd
-from snowflake.connector.pandas_tools import write_pandas
-import snowflake.connector
 
 # Our framework-related imports.
 from common.framework import save_test_results, set_test_result
@@ -67,6 +64,10 @@ def before_all(context) -> None:
     context.properties.sf_warehouse = "COMPUTE_WH"
     context.properties.sf_role = "ACCOUNTADMIN"
 
+    # Create GX context & Snowflake datasource/connection placeholders.  
+    # Actual connections are made in common_steps.py.
+    context.properties.gx_context = gx.get_context(mode="file", project_root_dir="./resources")
+    context.properties.gx_datasource =  None
     context.properties.sf_conn_params = {
         "user":      context.properties.sf_user_name,
         "password":  context.properties.sf_password,
@@ -75,21 +76,13 @@ def before_all(context) -> None:
         "database":  context.properties.sf_database,
         "schema":    context.properties.sf_schema
     }
-    context.properties.sf_conn = snowflake.connector.connect(**context.properties.sf_conn_params)
+    context.properties.sf_conn = None
     
-    # Add GX context & Snowflake datasource.
-    context.properties.gx_context = gx.get_context(mode="file", project_root_dir="./resources")
-    gx_conn_string = f"snowflake://{context.properties.sf_user_name}:{context.properties.sf_password}@{context.properties.sf_acct_name}/{context.properties.sf_database}/{context.properties.sf_schema}?warehouse={context.properties.sf_warehouse}&role={context.properties.sf_role}"
-    context.properties.gx_datasource = context.properties.gx_context.data_sources.add_or_update_snowflake(
-        name="snowflake_datasource",
-        connection_string=gx_conn_string,
-    )
-
     # Other properties
     context.properties.stack_name = 'localhost'
     context.properties.test_results = SimpleNamespace()
 
-    # Set engine_bom_version & suite_id
+    # Set version & suite_id
     set_test_result(context, 'version', 'latest')
     set_test_result(context, 'suite_id', datetime.now().strftime('%Y%m%d%H%M%S%f'))
 
