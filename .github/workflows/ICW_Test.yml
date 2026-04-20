@@ -32,7 +32,7 @@ concurrency:
 jobs:
   test:
     name: ICW Tests
-    runs-on: Linux
+    runs-on: ubuntu-latest
 
     container:
       image: node:20
