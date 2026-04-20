@@ -1,6 +1,8 @@
 .DS_Store
 .git
+allure-report/*
 bin/*
 downloads/
+features/reports/*
 lib/*
 screenshots/*

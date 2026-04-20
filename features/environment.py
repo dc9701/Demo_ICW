@@ -16,6 +16,13 @@ from datetime import datetime
 from dotenv import load_dotenv, find_dotenv
 from types import SimpleNamespace
 
+# Snowflake- and GX-related imports.
+import great_expectations as gx
+import pandas as pd
+from snowflake.connector.pandas_tools import write_pandas
+import snowflake.connector
+
+# Our framework-related imports.
 from common.framework import save_test_results, set_test_result
 
 dotenv_path = find_dotenv()
@@ -51,15 +58,39 @@ def before_all(context) -> None:
     context.properties.mfa_token = os.getenv('MFA_TOKEN')
     context.properties.rsa_key = os.getenv('RSA_KEY')
 
+    # Define Snowflake connection.
+    context.properties.sf_acct_name = os.getenv("MY_DB_ACCOUNT")
+    context.properties.sf_user_name = os.getenv("MY_DB_USERNAME")
+    context.properties.sf_password = os.getenv("MY_DB_PASSWORD")
+    context.properties.sf_database = "OR_WORKERS_COMP"
+    context.properties.sf_schema = "PUBLIC"
+    context.properties.sf_warehouse = "COMPUTE_WH"
+    context.properties.sf_role = "ACCOUNTADMIN"
+
+    context.properties.sf_conn_params = {
+        "user":      context.properties.sf_user_name,
+        "password":  context.properties.sf_password,
+        "account":   context.properties.sf_acct_name,
+        "warehouse": context.properties.sf_warehouse,
+        "database":  context.properties.sf_database,
+        "schema":    context.properties.sf_schema
+    }
+    context.properties.sf_conn = snowflake.connector.connect(**context.properties.sf_conn_params)
+    
+    # Add GX context & Snowflake datasource.
+    context.properties.gx_context = gx.get_context(mode="file", project_root_dir="./resources")
+    gx_conn_string = f"snowflake://{context.properties.sf_user_name}:{context.properties.sf_password}@{context.properties.sf_acct_name}/{context.properties.sf_database}/{context.properties.sf_schema}?warehouse={context.properties.sf_warehouse}&role={context.properties.sf_role}"
+    context.properties.gx_datasource = context.properties.gx_context.data_sources.add_or_update_snowflake(
+        name="snowflake_datasource",
+        connection_string=gx_conn_string,
+    )
+
     # Other properties
-    context.properties.stack_name = os.getenv('STACK_NAME') or None
-    context.properties.jupyter_kernel = {}
-    context.properties.jupyter_notebook = SimpleNamespace()
-    context.properties.jupyter_pass = 'jupyterpass'  # noqa: S105
+    context.properties.stack_name = 'localhost'
     context.properties.test_results = SimpleNamespace()
 
     # Set engine_bom_version & suite_id
-    set_test_result(context, 'version', os.getenv('ICW_VERSION') or None)
+    set_test_result(context, 'version', 'latest')
     set_test_result(context, 'suite_id', datetime.now().strftime('%Y%m%d%H%M%S%f'))
 
 
@@ -87,8 +118,10 @@ def after_feature(context, feature) -> None:
 
 def after_all(context) -> None:
     """
-    Teardown the environment after all tests.
+    Teardown the environment after all tests (close DB connections, save results).
     """
+    context.properties.sf_conn.close()
+
     # Writes updated reports/allure results and pushes to GitHub.
     save_test_results(context)
     logging.info(f"AFTER_ALL: Completed ICW tests with FAILED={context.failed} and ABORTED={context.aborted}")
