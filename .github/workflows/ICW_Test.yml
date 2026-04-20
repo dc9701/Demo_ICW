@@ -73,7 +73,6 @@ jobs:
         run: |
           wget -qO- -4 ifconfig.me | grep -E 'ip_addr:'
           mkdir ../downloads ../reports ../screenshots
-        # DCC behave ${{ github.event.inputs.debug }} --format=plain --outfile=../reports/allure  ${{ github.event.inputs.test_tags }} tests
           behave ${{ github.event.inputs.debug }} --format=plain ${{ github.event.inputs.test_tags }} tests
         env:
           MY_DB_ACCOUNT: uhb26519
