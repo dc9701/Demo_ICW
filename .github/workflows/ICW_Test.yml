@@ -62,7 +62,7 @@ jobs:
           echo 'ALLURE version:'; allure --version
       - name: Install allure-behave and great-expectations
         run: |
-          pip install --break-system-package allure-behave great_expectations 'great_expectations[snowflake]'
+          pip install --break-system-package allure-behave great_expectations 'great_expectations[snowflake]' pandas
       - name: Configure GitHub
         run: |
           git config user.email "dcc9701@gmail.com"
