@@ -62,7 +62,7 @@ jobs:
           echo 'ALLURE version:'; allure --version
       - name: Install allure-behave and great-expectations
         run: |
-          pip install --break-system-package allure-behave great_expectations 'great_expectations[snowflake]' pandas 'snowflake-connector-python[pandas]''
+          pip install --break-system-package allure-behave great_expectations 'great_expectations[snowflake]' pandas 'snowflake-connector-python[pandas]'
       - name: Configure GitHub
         run: |
           git config user.email "dcc9701@gmail.com"
@@ -101,7 +101,7 @@ jobs:
         if: always()
         uses: actions/upload-pages-artifact@v3
         with:
-          path: 'features/reports/allure-report'
+          path: 'reports/allure-report'
       - name: Deploy to GitHub Pages
         if: always()
         id: deployment
