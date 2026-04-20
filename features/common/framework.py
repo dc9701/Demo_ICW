@@ -538,12 +538,12 @@ def save_test_results(context):
     # Slightly different syntax and no need for 'allure generate' when running via GitHub actions.
     if (os.getenv('GITHUB_ACTIONS')):
         os.system(f"""
-        sed -i "s/{{context.properties.test_results.engine_bom_version}}/{context.properties.test_results.engine_bom_version}/g" reports/allure/*.json
+        sed -i "s/{{context.properties.test_results.version}}/{context.properties.test_results.version}/g" reports/allure/*.json
         sed -i "s/{{context.properties.stack_name}}/{context.properties.stack_name}/g" reports/allure/*.json >/dev/null 2>&1
         """)
     else:
         os.system(f"""
-        sed -i ".bak" "s/{{context.properties.test_results.engine_bom_version}}/{context.properties.test_results.engine_bom_version}/g" reports/allure/*.json
+        sed -i ".bak" "s/{{context.properties.test_results.version}}/{context.properties.test_results.version}/g" reports/allure/*.json
         sed -i ".bak" "s/{{context.properties.stack_name}}/{context.properties.stack_name}/g" reports/allure/*.json >/dev/null 2>&1
         rm reports/allure/*.json*.bak
         """)
@@ -675,7 +675,7 @@ def update_test_status(context):
                 "system_info": {{
                     "site_id": "{context.properties.stack_name}",
                     "cloud_platform": "{cloud}",
-                    "engine_bom_version": "{context.properties.test_results.engine_bom_version}"
+                    "version": "{context.properties.test_results.version}"
                 }},
                 "test_status": {{
                     "{test_suite}": {{
