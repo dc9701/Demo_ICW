@@ -53,16 +53,16 @@ jobs:
       - name: Install python modules via apt-get
         run: |
           apt-get install -y python3
-          apt-get install -y allure python3-behave python3-boto3 python3-dotenv python3-hamcrest python3-pip python3-pyotp python3-requests python3-selenium python3-websocket python3-yaml python3-bs4
+          apt-get install -y allure python3-pip python3-behave python3-dotenv
       - name: Install ALLURE executable
         run: |
           apt-get install -y default-jre
           wget https://github.com/allure-framework/allure2/releases/download/2.30.0/allure_2.30.0-1_all.deb
           dpkg -i allure_2.30.0-1_all.deb
           echo 'ALLURE version:'; allure --version
-      - name: Install allure-behave
+      - name: Install allure-behave and great-expectations
         run: |
-          pip install --break-system-package allure-behave
+          pip install --break-system-package allure-behave great_expectations 'great_expectations[snowflake]'
       - name: Configure GitHub
         run: |
           git config user.email "dcc9701@gmail.com"
