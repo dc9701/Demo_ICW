@@ -66,7 +66,7 @@ def before_all(context) -> None:
 
     # Create GX context & Snowflake datasource/connection placeholders.  
     # Actual connections are made in common_steps.py.
-    context.properties.gx_context = gx.get_context(mode="file", project_root_dir="./resources")
+    context.properties.gx_context = gx.get_context(mode="file", project_root_dir="../resources")
     context.properties.gx_datasource =  None
     context.properties.sf_conn_params = {
         "user":      context.properties.sf_user_name,

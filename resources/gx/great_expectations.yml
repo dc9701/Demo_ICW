@@ -87,10 +87,18 @@ fluent_datasources:
     assets:
       claims_asset:
         type: table
-        id: 1b7eff26-762a-477c-bdf7-81a01bd80ab2
+        id: 84920d33-2245-4b79-827f-055161d551eb
         batch_metadata: {}
         table_name: CLAIMS
     connection_string: 
       snowflake://dcc9701:Bondage137-2604@uhb26519/OR_WORKERS_COMP/PUBLIC?warehouse=COMPUTE_WH&role=ACCOUNTADMIN
+  pandas_datasource:
+    type: pandas
+    id: 8146cc62-d7e2-4cc1-8655-e17f27b5fb80
+    assets:
+      import_data:
+        type: dataframe
+        id: 28a6ce88-3d6a-4a9b-890f-3e110592aaf4
+        batch_metadata: {}
 analytics_enabled:
 data_context_id: 3711c57f-7160-4b21-b588-37d5ec1b80ba
