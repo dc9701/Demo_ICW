@@ -35,7 +35,7 @@ jobs:
     runs-on: ubuntu-latest
 
     container:
-      image: node:20
+      image: node:24
 
     environment:
       name: github-pages
