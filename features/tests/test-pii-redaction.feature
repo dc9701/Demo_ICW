@@ -33,6 +33,7 @@ Feature:  test-pii-redaction - Verify redaction of PII in CLAIMS table meets thr
     Scenario: 2a. Verify our baseline PII data (Employer_Name) is 'Redacted' in AT LEAST 26.75% of the rows.
         Then I verify the Employer_Name column in the CLAIMS table is Redacted for at least 26.75% of the rows
 
-    Scenario: 2b. Import 250 non-redacted rows and verify the PII check FAILS (now < 26.75%).
+    Scenario: 2b. Check if OR_WORK_COMP__250_Non_Redacted.csv meets our 26.75+% threshold; it does NOT, so FAIL the test and skip appending to Snowflake CLAIMS table.
+        # NOTE: The "appended data to the CLAIMS table" step will be SKIPPED if the verification fails, preventing ingestion of bad data.
         When I verify OR_WORK_COMP__250_Non_Redacted.csv has a Employer_Name column that is Redacted for at least 26.75% of the rows
         Then I append data to the CLAIMS table from OR_WORK_COMP__250_Non_Redacted.csv
