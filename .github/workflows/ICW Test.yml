@@ -1,0 +1,108 @@
+name: ICW Test
+
+on:
+  workflow_dispatch:
+    inputs:
+      test_tags:
+        type: string
+        description: Test tags
+        required: false
+        default: ''
+      debug:
+        type: choice
+        description: Debug options
+        required: false
+        options:
+          - --no-logcapture --no-capture
+          - -s --no-capture
+          - --quiet
+          - --verbose
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+    contents: write
+    pages: write
+    id-token: write
+  
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+    group: "pages"
+    cancel-in-progress: false
+  
+jobs:
+  test:
+    name: ICW Tests
+    runs-on: Linux
+
+    container:
+      image: node:20
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+  
+    steps:
+      - uses: actions/checkout@v4
+      - name: Update GIT config
+        run: |
+          /usr/bin/git config --system --add safe.directory '*'
+      - name: Install missing OS lsb-release
+        run: |
+          apt-get update
+          apt-get install -y lsb-release
+      - name: Install python modules via apt-get
+        run: |
+          apt-get install -y python3
+          apt-get install -y allure python3-behave python3-boto3 python3-dotenv python3-hamcrest python3-pip python3-pyotp python3-requests python3-selenium python3-websocket python3-yaml python3-bs4
+      - name: Install ALLURE executable
+        run: |
+          apt-get install -y default-jre
+          wget https://github.com/allure-framework/allure2/releases/download/2.30.0/allure_2.30.0-1_all.deb
+          dpkg -i allure_2.30.0-1_all.deb
+          echo 'ALLURE version:'; allure --version
+      - name: Install allure-behave
+        run: |
+          pip install --break-system-package allure-behave
+      - name: Configure GitHub
+        run: |
+          git config user.email "dcc9701@gmail.com"
+          git config user.name "David Cooper"
+      - name: Run the test(s)
+        working-directory: ./features
+        id: run_tests
+        run: |
+          wget -qO- -4 ifconfig.me | grep -E 'ip_addr:'
+          mkdir ../downloads ../screenshots
+          behave ${{ github.event.inputs.debug }} --format=plain --outfile=reports/allure  ${{ github.event.inputs.test_tags }} tests
+        env:
+          MY_DB_ACCOUNT: uhb26519
+          MY_DB_PASSWORD: MySnowPass-2604
+          MY_DB_USERNAME: dcc9701
+          TERM: xterm-256color
+      - name: Generate Allure HTML report from results
+        if: always()
+        working-directory: ./reports
+        run: |
+            allure generate --clean --single-file allure
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-evidence
+          path: |
+            downloads/*
+            features/reports/*
+            screenshots/*
+
+      # Deploy Allure HTML report to our repo's GitHub Pages
+      - name: Setup Pages
+        if: always()
+        uses: actions/configure-pages@v5
+      - name: Upload artifact
+        if: always()
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'features/reports/allure-report'
+      - name: Deploy to GitHub Pages
+        if: always()
+        id: deployment
+        uses: actions/deploy-pages@v4
