@@ -90,7 +90,7 @@ jobs:
           name: test-evidence
           path: |
             downloads/*
-            features/reports/*
+            reports/*
             screenshots/*
 
       # Deploy Allure HTML report to our repo's GitHub Pages
