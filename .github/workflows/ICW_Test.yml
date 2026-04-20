@@ -72,8 +72,9 @@ jobs:
         id: run_tests
         run: |
           wget -qO- -4 ifconfig.me | grep -E 'ip_addr:'
-          mkdir ../downloads ../screenshots
-          behave ${{ github.event.inputs.debug }} --format=plain --outfile=reports/allure  ${{ github.event.inputs.test_tags }} tests
+          mkdir ../downloads ../reports ../screenshots
+        # DCC behave ${{ github.event.inputs.debug }} --format=plain --outfile=../reports/allure  ${{ github.event.inputs.test_tags }} tests
+          behave ${{ github.event.inputs.debug }} --format=plain ${{ github.event.inputs.test_tags }} tests
         env:
           MY_DB_ACCOUNT: uhb26519
           MY_DB_PASSWORD: MySnowPass-2604
