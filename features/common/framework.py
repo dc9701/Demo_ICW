@@ -27,14 +27,14 @@ def save_test_results(context):
     # Slightly different syntax and no need for 'allure generate' when running via GitHub actions.
     if (os.getenv('GITHUB_ACTIONS')):
         os.system(f"""
-        sed -i "s/{{context.properties.test_results.version}}/{context.properties.test_results.version}/g" reports/allure/*.json
-        sed -i "s/{{context.properties.stack_name}}/{context.properties.stack_name}/g" reports/allure/*.json >/dev/null 2>&1
+        sed -i "s/{{context.properties.test_results.version}}/{context.properties.test_results.version}/g" ../reports/allure/*.json
+        sed -i "s/{{context.properties.stack_name}}/{context.properties.stack_name}/g" ../reports/allure/*.json >/dev/null 2>&1
         """)
     else:
         os.system(f"""
-        sed -i ".bak" "s/{{context.properties.test_results.version}}/{context.properties.test_results.version}/g" reports/allure/*.json
-        sed -i ".bak" "s/{{context.properties.stack_name}}/{context.properties.stack_name}/g" reports/allure/*.json >/dev/null 2>&1
-        rm reports/allure/*.json*.bak
+        sed -i ".bak" "s/{{context.properties.test_results.version}}/{context.properties.test_results.version}/g" ../reports/allure/*.json
+        sed -i ".bak" "s/{{context.properties.stack_name}}/{context.properties.stack_name}/g" ../reports/allure/*.json >/dev/null 2>&1
+        rm ../reports/allure/*.json*.bak
         """)
 
 
