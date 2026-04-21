@@ -42,18 +42,7 @@ def before_all(context) -> None:
     # -- SET LOG LEVEL: behave --logging-level=ERROR ...
     # on behave command-line or in "behave.ini" (default is INFO).
     context.config.setup_logging()
-
-    # AWS secrets
     context.properties = SimpleNamespace()
-    context.properties.aws_access_key_id = os.getenv('AWS_ACCESS_KEY_ID')
-    context.properties.aws_secret_access_key = os.getenv('AWS_SECRET_ACCESS_KEY')
-    context.properties.aws_session_token = os.getenv('AWS_SESSION_TOKEN') or None
-
-    # Other secrets
-    context.properties.github_password = os.getenv('GITHUB_PASSWORD')
-    context.properties.github_username = os.getenv('GITHUB_USERNAME')
-    context.properties.mfa_token = os.getenv('MFA_TOKEN')
-    context.properties.rsa_key = os.getenv('RSA_KEY')
 
     # Define Snowflake connection.
     context.properties.sf_acct_name = os.getenv("MY_DB_ACCOUNT")
