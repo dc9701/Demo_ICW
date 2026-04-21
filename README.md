@@ -40,7 +40,7 @@ I used a BDD approach to make test design clearer and easier to maintain, with `
 
 <img src="images/GitHub_Actions_ICW_Test_Results.png" alt="GitHub Actions" width="800" />
 
-As expected, the first two test scenarios pass, but Scenario 2b FAILS, since the CSV import file does not match our data quality expectation (Employer Name is redacted in greater than 26.75% of the rows).  With 2b failing, the final **Then I append data...** step is SKIPPED, meaning our Snowflake production tables are left uncorrupted.
+As expected, the first two test scenarios pass, but Scenario 2b FAILS, since the CSV import file does not match our data quality expectation (Employer Name is redacted in at least 26.75% of the rows).  With 2b failing, the final **Then I append data...** step is SKIPPED, meaning our Snowflake production tables are left uncorrupted.
 
 ```
     Scenario: 1. SETUP: Connect to Snowflake and set up clean test data.
