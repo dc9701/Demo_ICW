@@ -34,7 +34,7 @@ Using the **GX Core** and **Snowflake** libraries, we can ingest data and valida
     #   a. Verify our baseline PII data (Employer_Name) is redacted in AT LEAST 26.75% of the rows.
     #   b. Before importing 250 non-redacted rows, verify the PII check FAILS (now < 26.75%).
 ```
-I used a BDD approach to make test design clearer and easier to maintain, with `common_steps.py` doing all the heavy lifting.  While you can run the test locally once you have all the python packages installed, it's easier to just run the GitHub Actions workflow:
+I used a BDD approach to make test design clearer and easier to maintain, with `common_steps.py` doing all the heavy lifting.  While you can run the test locally once you have all the python packages installed, it's easier to just run the GitHub Actions workflow (you'll need to login to Github):
 
 <img src="images/GitHub_Actions_ICW_Test.png" alt="GitHub Actions" width="800" />
 
