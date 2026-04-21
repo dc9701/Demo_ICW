@@ -18,7 +18,7 @@ Feature:  test-pii-redaction - Verify redaction of PII in CLAIMS table meets thr
     #
     # 2. Test scenarios:
     #   a. Verify our baseline PII data (Employer_Name) is redacted in AT LEAST 26.75% of the rows.
-    #   b. Import 250 non-redacted rows and verify the PII check FAILS (now < 26.75%).
+    #   b. Before importing 250 non-redacted rows, verify the PII check FAILS (now < 26.75%).
     #
     # NOTE: No additional tear-down is requied, since the DB connection is automatically closed in environment.py
     #       after_all() method.
