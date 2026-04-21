@@ -94,7 +94,7 @@ def step_then_verify_import_file_has_column_value_for_percent_of_rows(context, i
 
 Using both Google's Gemini "AI Mode" in some searches and CoPilot (GPT-4.1 or Claude Haiku 4.5) for code generation, I find the results something of a coin toss.  Half the time it would steer me in the right direction where I could drill down and find a solution sooner.  Other times, it would reference deprecated syntax or sample code with erroneous dependencies, and I'd end up going down rabbit holes I should have avoided altogether.
 
-For example, the deprecated `context.sources.add_snowflake(...)` would keep coming up, even in auto-complete prompts.  It wasn't until I really READ the warnings in my logs (old school!) that I disovered the error:
+For example, the deprecated `context.sources.add_snowflake(...)` would keep coming up, even in auto-complete prompts.  It wasn't until I really READ the warnings in my logs (old school!) that I discovered the error:
 
 ```
 DeprecationWarning: add_or_update_datasource() from the DataContext is deprecated and will be removed in a future version of GX.
