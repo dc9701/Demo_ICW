@@ -97,7 +97,8 @@ Using both Google's Gemini "AI Mode" in some searches and CoPilot (GPT-4.1 or Cl
 For example, the deprecated `context.sources.add_snowflake(...)` would keep coming up, even in auto-complete prompts.  It wasn't until I really READ the warnings in my logs (old school!) that I disovered the error:
 
 ```
-DeprecationWarning: add_or_update_datasource() from the DataContext is deprecated and will be removed in a future version of GX. Please use `context.data_sources.add_or_update` instead.
+DeprecationWarning: add_or_update_datasource() from the DataContext is deprecated and will be removed in a future version of GX.
+Please use `context.data_sources.add_or_update` instead.
 ```
 
 <br>
