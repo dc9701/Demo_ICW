@@ -87,7 +87,7 @@ fluent_datasources:
     assets:
       claims_asset:
         type: table
-        id: e3b487de-2c9d-46a3-9cec-81c9075ceae2
+        id: 7f0162bc-a24f-4ca7-bca0-9190d4e8640e
         batch_metadata: {}
         table_name: CLAIMS
     connection_string: 
@@ -98,7 +98,7 @@ fluent_datasources:
     assets:
       import_data:
         type: dataframe
-        id: 56ce4909-3e02-4e27-be0e-ca40c7f2033c
+        id: d9b467e3-b315-4466-86df-07a464b49009
         batch_metadata: {}
 analytics_enabled:
 data_context_id: 3711c57f-7160-4b21-b588-37d5ec1b80ba

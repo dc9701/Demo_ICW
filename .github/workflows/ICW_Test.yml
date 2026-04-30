@@ -73,7 +73,7 @@ jobs:
         run: |
           wget -qO- -4 ifconfig.me | grep -E 'ip_addr:'
           mkdir ../downloads ../reports ../screenshots
-          behave ${{ github.event.inputs.debug }} --format=plain ${{ github.event.inputs.test_tags }} tests
+          behave ${{ github.event.inputs.debug }} -f allure_behave.formatter:AllureFormatter -o ../reports/allure-results ${{ github.event.inputs.test_tags }} tests
         env:
           MY_DB_ACCOUNT: uhb26519
           MY_DB_PASSWORD: MySnowPass-2604
@@ -83,7 +83,7 @@ jobs:
         if: always()
         working-directory: ./reports
         run: |
-            allure generate --clean --single-file allure
+            allure generate allure-results --clean -o allure-report
       - uses: actions/upload-artifact@v4
         if: always()
         with:
