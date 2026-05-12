@@ -1,4 +1,4 @@
-# ICW - Data Integrity Check Before Ingestion to Snowflake
+# POC - Data Integrity Check Before Ingestion to Snowflake
 
 Here is a small PoC on how to use open source automation tools and AI to migrate data from a legacy SQL backend to Snowflake, using GX Core to check data integrity.
 
