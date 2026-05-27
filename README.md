@@ -1,6 +1,6 @@
 # Data Integrity Check Before Ingestion to Snowflake
 
-Here is a demo of using open source automation tools (GX Core) and AI to migrate data from a legacy SQL backend to Snowflake, using GX Core to check data integrity.
+Here is a demo of using open source automation tools and AI to migrate data from a legacy SQL backend to Snowflake, using GX Core to check data integrity.
 
 ### SAMPLE DATA
 
